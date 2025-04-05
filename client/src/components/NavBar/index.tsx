@@ -25,9 +25,11 @@ export default function NavBar() {
           </Link>
         </div>
         <div className="flex space-x-4">
-          <button className="px-6 py-3 bg-white text-secondary font-semibold rounded-lg hover:bg-gray-200 focus:outline-none cursor-pointer">
-            Login
-          </button>
+          <Link to={"/login"}>
+            <button className="px-6 py-3 bg-white text-secondary font-semibold rounded-lg hover:bg-gray-200 focus:outline-none cursor-pointer">
+              Login
+            </button>
+          </Link>
         </div>
       </div>
     </nav>
