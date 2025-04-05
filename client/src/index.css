@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #7217d4;
+  --color-secondary: #f59e0b;
+
+  --font-kings: "Kings", cursive;
+}
+
+body {
+  background-color: lightgray;
+}

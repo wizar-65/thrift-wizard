@@ -5,7 +5,9 @@ export default function MainLayout() {
   return (
     <>
       <NavBar />
-      <Outlet />
+      <div className="m-5">
+        <Outlet />
+      </div>
     </>
   )
 }
