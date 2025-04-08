@@ -12,6 +12,12 @@ const users: User[] = []
 
 let refreshTokens: string[] = []
 
+router.delete("/logout", (req, res) => {
+  refreshTokens = refreshTokens.filter((token) => token !== req.body.token)
+  console.log(refreshTokens)
+  res.sendStatus(204)
+})
+
 router.post("/token", (req, res) => {
   const refreshToken = req.body.token as string
   if (refreshToken == null) {
@@ -90,7 +96,7 @@ function generateAccessToken(id: string) {
   if (!secretKey) {
     throw new Error("Server configuration error: Missing JWT secret")
   }
-  return jwt.sign({ id }, secretKey, { expiresIn: "30s" })
+  return jwt.sign({ id }, secretKey, { expiresIn: "15m" })
 }
 
 router.get("/users", authenticateAccessToken, (req, res) => {
