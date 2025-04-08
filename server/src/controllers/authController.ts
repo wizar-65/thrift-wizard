@@ -1,6 +1,5 @@
-import express, { Request, Response, NextFunction } from "express"
+import { Request, Response } from "express"
 import bcrypt from "bcrypt"
-import dotenv from "dotenv"
 import jwt from "jsonwebtoken"
 import { User } from "../types/express"
 import { generateAccessToken, generateRefreshToken } from "../utils/tokenUtils"

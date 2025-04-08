@@ -8,7 +8,6 @@ export default function authenticateAccessToken(
   next: NextFunction
 ) {
   const token = req.headers["authorization"]?.split(" ")[1]
-  console.log(token)
   if (token == null) {
     res.send(401)
     return
