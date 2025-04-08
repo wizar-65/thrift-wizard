@@ -1,12 +1,13 @@
 {
   "compilerOptions": {
-    "target": "ES6",
-    "module": "commonjs",
-    "outDir": "./dist",
-    "rootDir": "./src",
-    "esModuleInterop": true,
+    "target": "ES6", // or "ES2020"
+    "module": "commonjs", // Use CommonJS modules for Node.js
+    "outDir": "./dist", // Compiled JS files will go here
+    "rootDir": "./src", // Your source code is in the src folder
+    "esModuleInterop": true, // Necessary for compatibility
     "strict": true,
-    "skipLibCheck": true
+    "resolveJsonModule": true
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*"], // Include TypeScript files in the src folder
+  "exclude": ["node_modules"] // Exclude node_modules
 }
