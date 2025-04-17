@@ -3,10 +3,10 @@ import authenticateAccessToken from "../middlewares/authMiddleware"
 
 const router = express.Router()
 
-const items = [{ id: "tateweaver", itemName: "Toy" }]
+const items = [{ username: "tateweaver", itemName: "Toy" }]
 
 router.get("/items", authenticateAccessToken, (req, res) => {
-  res.json(items.filter((item) => item.id === req.user.id))
+  res.json(items.filter((item) => item.username === req.user.username))
 })
 
 export default router

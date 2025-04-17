@@ -16,10 +16,6 @@ app.use(express.json())
 app.use("/api/auth", authRoutes)
 app.use("/api/users", userRoutes)
 
-app.get("/test", (req, res) => {
-  console.log("HELLo")
-})
-
 // Start server
 const PORT = process.env.PORT
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`))
