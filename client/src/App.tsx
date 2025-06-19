@@ -3,7 +3,7 @@ import MainLayout from "./layouts/MainLayout"
 import Welcome from "./pages/Welcome"
 import "./index.css"
 import UnderConstruction from "./components/common/UnderConstruction"
-import Login from "./auth/Login"
+import { Login } from "./auth/Login"
 
 function App() {
   return (

@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-export default function Login() {
+export function Login() {
   const [username, setUsername] = useState<string>("")
   const [password, setPassword] = useState<string>("")
 
@@ -40,7 +40,7 @@ export default function Login() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <button className=" m-2 bg-secondary text-primary font-semibold rounded-lg hover:bg-gray-200 focus:outline-none cursor-pointer">
+            <button className="m-2 bg-secondary text-primary font-semibold rounded-lg hover:bg-gray-200 focus:outline-none cursor-pointer">
               Login
             </button>
           </div>

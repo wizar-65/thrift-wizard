@@ -19,7 +19,10 @@ export default function authenticateAccessToken(
   }
 
   jwt.verify(token, secretKey, (err, user) => {
-    if (err) return res.send(403)
+    if (err)
+      return res
+        .send(403)
+        .json({ message: "Access Token expired. Not authorized." })
     req.user = user as User
     next()
   })

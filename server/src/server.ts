@@ -2,6 +2,7 @@ import dotenv from "dotenv"
 import express from "express"
 import authRoutes from "./routes/authRoutes"
 import userRoutes from "./routes/userRoutes"
+import cookieParser from "cookie-parser"
 
 // look for a .env file and pull in any environment variables from that file
 dotenv.config({ path: "./.env" })
@@ -10,6 +11,7 @@ dotenv.config({ path: "./.env" })
 const app = express()
 
 // Middleware
+app.use(cookieParser())
 app.use(express.json())
 
 // Routes
