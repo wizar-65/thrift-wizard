@@ -5,9 +5,9 @@ export default function MainLayout() {
   return (
     <>
       <NavBar />
-      <div className="m-5">
+      <main className="m-5">
         <Outlet />
-      </div>
+      </main>
     </>
   )
 }

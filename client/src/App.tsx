@@ -1,9 +1,9 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import MainLayout from "./layouts/MainLayout"
-import Welcome from "./pages/Welcome"
+import { Welcome } from "./pages"
 import "./index.css"
 import UnderConstruction from "./components/UnderConstruction"
-import { Login } from "./features/auth/components/Login"
+import { LoginRegister } from "./pages"
 
 function App() {
   return (
@@ -12,7 +12,7 @@ function App() {
         <Route path="/" element={<MainLayout />}>
           {/* Unprotected Routes */}
           <Route index element={<Welcome />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<LoginRegister />} />
           {/* Protected Routes */}
           <Route path="items" element={<UnderConstruction />} />
           <Route path="stats" element={<UnderConstruction />} />
