@@ -2,8 +2,8 @@ import { BrowserRouter, Route, Routes } from "react-router-dom"
 import MainLayout from "./layouts/MainLayout"
 import Welcome from "./pages/Welcome"
 import "./index.css"
-import UnderConstruction from "./components/common/UnderConstruction"
-import { Login } from "./auth/Login"
+import UnderConstruction from "./components/UnderConstruction"
+import { Login } from "./features/auth/components/Login"
 
 function App() {
   return (

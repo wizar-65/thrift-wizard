@@ -120,6 +120,7 @@ export async function logout(req: Request, res: Response) {
 
   if (!refreshToken) {
     res.status(400).json({ message: "No valid refresh token provided" })
+    return
   }
 
   try {
