@@ -1,21 +1,26 @@
+import { useAuth } from "@/features/auth/context/AuthContext"
 import { Link } from "react-router-dom"
 
 export default function NavBar() {
+  const { isAuthenticated } = useAuth()
+
   return (
     <nav className="bg-primary p-4 shadow-lg relative">
       <div className="flex justify-between items-center">
         <div className="flex space-x-4">
-          <ul className="flex space-x-5 text-secondary">
-            <li>
-              <Link to={"/"}>Dashboard</Link>
-            </li>
-            <li>
-              <Link to={"/items"}>My Items</Link>
-            </li>
-            <li>
-              <Link to={"/stats"}>Stats</Link>
-            </li>
-          </ul>
+          {isAuthenticated && (
+            <ul className="flex space-x-5 text-secondary">
+              <li>
+                <Link to={"/"}>Dashboard</Link>
+              </li>
+              <li>
+                <Link to={"/items"}>My Items</Link>
+              </li>
+              <li>
+                <Link to={"/stats"}>Stats</Link>
+              </li>
+            </ul>
+          )}
         </div>
         <div className="absolute left-1/2 transform -translate-x-1/2">
           <Link to={"/"}>
