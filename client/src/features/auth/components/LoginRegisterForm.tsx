@@ -25,12 +25,16 @@ export function LoginRegisterForm({ isRegister }: { isRegister: boolean }) {
     register,
     handleSubmit,
     reset,
+    setError,
     formState: { errors },
   } = useForm<LoginRegisterFormInputs>({
     defaultValues: formDefault,
   })
 
   const onSubmit = (data: LoginRegisterFormInputs) => {
+    if (isRegister && data.confirmPassword !== data.password) {
+      setError("confirmPassword", { message: "Password fields do not match" })
+    }
     console.log(data)
   }
 
@@ -62,6 +66,7 @@ export function LoginRegisterForm({ isRegister }: { isRegister: boolean }) {
               label="Email"
               {...register("email", { required: "Field is required" })}
               error={errors.email}
+              type="email"
             />
           </>
         )}
