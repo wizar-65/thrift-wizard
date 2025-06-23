@@ -7,6 +7,7 @@ import { LoginRegister } from "./pages"
 import { AuthProvider } from "./features/auth/context/AuthContext"
 import { Provider } from "react-redux"
 import { store } from "./redux/store"
+import { ProtectedRoute } from "./features/auth/components/ProtectedRoute"
 
 function App() {
   return (
@@ -18,9 +19,10 @@ function App() {
               {/* Unprotected Routes */}
               <Route index element={<Welcome />} />
               <Route path="/login" element={<LoginRegister />} />
-              {/* Protected Routes */}
-              <Route path="items" element={<UnderConstruction />} />
-              <Route path="stats" element={<UnderConstruction />} />
+              <Route element={<ProtectedRoute />}>
+                <Route path="items" element={<UnderConstruction />} />
+                <Route path="stats" element={<UnderConstruction />} />
+              </Route>
             </Route>
           </Routes>
         </AuthProvider>

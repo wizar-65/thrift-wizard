@@ -12,7 +12,7 @@ export default function NavBar() {
           {isAuthenticated && (
             <ul className="flex space-x-5 text-secondary">
               <li>
-                <Link to={"/"}>Dashboard</Link>
+                <Link to={"/"}>Home</Link>
               </li>
               <li>
                 <Link to={"/items"}>My Items</Link>
