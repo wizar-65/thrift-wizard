@@ -12,7 +12,7 @@ export function token(req: Request, res: Response) {
   const refreshToken = req.cookies.refreshToken
 
   if (!refreshToken) {
-    res.sendStatus(400).json({ message: "No valid refresh token provided" })
+    res.status(400).json({ message: "No valid refresh token provided" })
     return
   }
 
@@ -27,12 +27,12 @@ export function token(req: Request, res: Response) {
   }
 
   const accessToken = generateAccessToken(id, username)
-  res.json({ accessToken })
+  res.status(200).json({ accessToken })
 }
 
 export async function register(req: Request, res: Response) {
   try {
-    const { username, password } = req.body
+    const { username, firstName, lastName, email, password } = req.body
     const hashedPassword = await bcrypt.hash(password, 10)
 
     try {
@@ -46,10 +46,9 @@ export async function register(req: Request, res: Response) {
       }
 
       const insertResult = await pool.query(
-        "INSERT INTO public.users (username, password_hash) VALUES ($1, $2) RETURNING *",
-        [username, hashedPassword]
+        "INSERT INTO public.users (username, first_name, last_name, email, password_hash) VALUES ($1, $2, $3, $4, $5)",
+        [username, firstName, lastName, email, hashedPassword]
       )
-      res.json(insertResult.rows[0])
     } catch (err) {
       console.error(err)
       res.status(500).send()

@@ -1,6 +1,8 @@
 import { Input } from "@/components/form/Input"
+import { useLoginMutation, useRegisterMutation } from "@/redux/services/auth"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { useAuth } from "../context/AuthContext"
 
 type LoginRegisterFormInputs = {
   username: string
@@ -11,7 +13,13 @@ type LoginRegisterFormInputs = {
   email: string
 }
 
-export function LoginRegisterForm({ isRegister }: { isRegister: boolean }) {
+export function LoginRegisterForm({
+  isRegister,
+  toLogin,
+}: {
+  isRegister: boolean
+  toLogin: () => void
+}) {
   const formDefault = {
     username: "",
     password: "",
@@ -20,6 +28,9 @@ export function LoginRegisterForm({ isRegister }: { isRegister: boolean }) {
     firstName: "",
     lastName: "",
   }
+  const { handleSetAccessToken } = useAuth()
+  const [registerUser, { isLoading: registerLoading }] = useRegisterMutation()
+  const [loginUser, { isLoading: loginLoading }] = useLoginMutation()
 
   const {
     register,
@@ -31,11 +42,29 @@ export function LoginRegisterForm({ isRegister }: { isRegister: boolean }) {
     defaultValues: formDefault,
   })
 
-  const onSubmit = (data: LoginRegisterFormInputs) => {
+  const onSubmit = async (data: LoginRegisterFormInputs) => {
     if (isRegister && data.confirmPassword !== data.password) {
       setError("confirmPassword", { message: "Password fields do not match" })
     }
-    console.log(data)
+
+    try {
+      if (isRegister) {
+        await registerUser(data).unwrap()
+        alert("New user added successfully")
+        toLogin()
+      } else {
+        const { username, password } = data
+        const response = await loginUser({
+          username,
+          password,
+        })
+        if (response.data) {
+          handleSetAccessToken(response.data.accessToken)
+        }
+      }
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   useEffect(() => {
@@ -88,12 +117,12 @@ export function LoginRegisterForm({ isRegister }: { isRegister: boolean }) {
             error={errors.confirmPassword}
           />
         )}
-        <button className="m-2 bg-secondary text-primary font-semibold rounded-lg hover:bg-gray-200 focus:outline-none cursor-pointer">
+        <button
+          disabled={registerLoading || loginLoading}
+          className="m-2 bg-secondary text-primary font-semibold rounded-lg hover:bg-gray-200 focus:outline-none cursor-pointer"
+        >
           {isRegister ? "Register" : "Login"}
         </button>
-      </div>
-      <div>
-        <p></p>
       </div>
     </form>
   )

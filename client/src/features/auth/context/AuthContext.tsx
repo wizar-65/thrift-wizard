@@ -1,10 +1,18 @@
-import { createContext, ReactNode, useContext, useState } from "react"
-import axios from "axios"
+import {
+  useLogoutMutation,
+  useRefreshTokenMutation,
+} from "@/redux/services/auth"
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react"
 
 type AuthContextType = {
   accessToken: string | null
-  login: (username: string, password: string) => Promise<void>
-  register: (username: string, password: string) => Promise<void>
+  handleSetAccessToken: (token: string) => void
   logout: () => void
   isAuthenticated: boolean
 }
@@ -13,43 +21,41 @@ type AuthContextType = {
 export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
+  const [refreshToken] = useRefreshTokenMutation()
+
   // hold our access token in state instead of browser storage
   const [accessToken, setAccessToken] = useState<string | null>(null)
 
-  // On successful login, set access token
-  const login = async (username: string, password: string) => {
-    const response = await axios({
-      method: "POST",
-      url: `${import.meta.env.VITE_THRIFT_WIZARD_SERVER_URL}/auth/login`,
-      data: {
-        username,
-        password,
-      },
-      withCredentials: true,
-    })
+  useEffect(() => {
+    const attemptRefreshToken = async () => {
+      try {
+        const response = await refreshToken().unwrap()
+        setAccessToken(response.accessToken || null)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    attemptRefreshToken()
+  }, [refreshToken])
 
-    setAccessToken(response.data.accessToken)
-  }
+  const [logoutUser] = useLogoutMutation()
 
-  const logout = () => setAccessToken(null)
+  // function to set access token when user logs in
+  const handleSetAccessToken = (token: string) => setAccessToken(token)
 
-  const register = async (username: string, password: string) => {
-    const response = await axios({
-      method: "POST",
-      url: `${import.meta.env.VITE_THRIFT_WIZARD_SERVER_URL}/auth/register`,
-      data: {
-        username,
-        password,
-      },
-    })
-
-    console.log(response.data)
+  // function to call logout endpoint and set the access token to null
+  const logout = async () => {
+    try {
+      await logoutUser().unwrap()
+      setAccessToken(null)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   const context_value: AuthContextType = {
     accessToken,
-    login,
-    register,
+    handleSetAccessToken,
     logout,
     isAuthenticated: !!accessToken,
   }

@@ -5,23 +5,27 @@ import "./index.css"
 import UnderConstruction from "./components/UnderConstruction"
 import { LoginRegister } from "./pages"
 import { AuthProvider } from "./features/auth/context/AuthContext"
+import { Provider } from "react-redux"
+import { store } from "./redux/store"
 
 function App() {
   return (
-    <AuthProvider>
+    <Provider store={store}>
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<MainLayout />}>
-            {/* Unprotected Routes */}
-            <Route index element={<Welcome />} />
-            <Route path="/login" element={<LoginRegister />} />
-            {/* Protected Routes */}
-            <Route path="items" element={<UnderConstruction />} />
-            <Route path="stats" element={<UnderConstruction />} />
-          </Route>
-        </Routes>
+        <AuthProvider>
+          <Routes>
+            <Route path="/" element={<MainLayout />}>
+              {/* Unprotected Routes */}
+              <Route index element={<Welcome />} />
+              <Route path="/login" element={<LoginRegister />} />
+              {/* Protected Routes */}
+              <Route path="items" element={<UnderConstruction />} />
+              <Route path="stats" element={<UnderConstruction />} />
+            </Route>
+          </Routes>
+        </AuthProvider>
       </BrowserRouter>
-    </AuthProvider>
+    </Provider>
   )
 }
 

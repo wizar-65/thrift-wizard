@@ -1,8 +1,9 @@
 import { useAuth } from "@/features/auth/context/AuthContext"
 import { Link } from "react-router-dom"
+import { Button } from "./styled/Button"
 
 export default function NavBar() {
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, logout } = useAuth()
 
   return (
     <nav className="bg-primary p-4 shadow-lg relative">
@@ -30,11 +31,13 @@ export default function NavBar() {
           </Link>
         </div>
         <div className="flex space-x-4">
-          <Link to={"/login"}>
-            <button className="px-6 py-3 bg-white text-secondary font-semibold rounded-lg hover:bg-gray-200 focus:outline-none cursor-pointer">
-              Login
-            </button>
-          </Link>
+          {isAuthenticated ? (
+            <Button onClick={() => logout()}>Logout</Button>
+          ) : (
+            <Link to={"/login"}>
+              <Button>Login</Button>
+            </Link>
+          )}
         </div>
       </div>
     </nav>
