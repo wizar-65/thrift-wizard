@@ -1,3 +1,4 @@
+import { User } from "@/types/user"
 import { api } from "../api"
 import { LoginRequest, RegisterUserRequest } from "@/types/auth"
 
@@ -10,7 +11,10 @@ const authApi = api.injectEndpoints({
         body,
       }),
     }),
-    login: builder.mutation<{ accessToken: string }, LoginRequest>({
+    login: builder.mutation<
+      { accessToken: string; userInfo: User },
+      LoginRequest
+    >({
       query: (body) => ({
         url: "/auth/login",
         method: "POST",

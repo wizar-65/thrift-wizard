@@ -1,3 +1,4 @@
+import { useUser } from "@/hooks/useUser"
 import {
   useLogoutMutation,
   useRefreshTokenMutation,
@@ -25,6 +26,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   // hold our access token in state instead of browser storage
   const [accessToken, setAccessToken] = useState<string | null>(null)
+  const { clearUser } = useUser()
 
   useEffect(() => {
     const attemptRefreshToken = async () => {
@@ -48,6 +50,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       await logoutUser().unwrap()
       setAccessToken(null)
+      clearUser()
     } catch (error) {
       console.error(error)
     }

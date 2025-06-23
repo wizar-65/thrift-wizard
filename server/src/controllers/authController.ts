@@ -97,6 +97,15 @@ export async function login(req: Request, res: Response) {
       [user.id, hashToken(refreshToken)]
     )
 
+    const userInfoQuery = await pool.query(
+      `SELECT username, first_name, last_name, email
+      FROM users
+      WHERE username = $1`,
+      [username]
+    )
+
+    const userInfo = userInfoQuery.rows[0]
+
     res
       .cookie("refreshToken", refreshToken, {
         httpOnly: true,
@@ -105,7 +114,7 @@ export async function login(req: Request, res: Response) {
         maxAge: 7 * 24 * 60 * 60 * 1000, // expires in a week
         path: "/", // available to all routes
       })
-      .json({ accessToken })
+      .json({ accessToken, userInfo })
   } catch (err) {
     console.error(err)
     res.status(500).send({ message: "Server error" })
