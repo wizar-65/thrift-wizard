@@ -1,5 +1,6 @@
 import { Input } from "@/components/form/Input"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
+import { useForm } from "react-hook-form"
 
 type LoginRegisterFormInputs = {
   username: string
@@ -20,74 +21,74 @@ export function LoginRegisterForm({ isRegister }: { isRegister: boolean }) {
     lastName: "",
   }
 
-  const [formState, setFormState] =
-    useState<LoginRegisterFormInputs>(formDefault)
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<LoginRegisterFormInputs>({
+    defaultValues: formDefault,
+  })
 
-  useEffect(() => {
-    setFormState(formDefault)
-  }, [isRegister])
-
-  const handleSetFormState = (field: string, value: string) =>
-    setFormState((prev) => ({ ...prev, [field]: value }))
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    console.log(formState)
+  const onSubmit = (data: LoginRegisterFormInputs) => {
+    console.log(data)
   }
 
+  useEffect(() => {
+    reset(formDefault)
+  }, [isRegister])
+
   return (
-    <form onSubmit={handleSubmit} className="w-full">
+    <form onSubmit={handleSubmit(onSubmit)} className="w-full">
       <div className="space-y-2 flex flex-col justify-center">
         <Input
           label="Username"
-          type="text"
-          id="username"
-          value={formState.username}
-          onChange={(e) => handleSetFormState("username", e.target.value)}
+          {...register("username", { required: "Field is required" })}
+          error={errors.username}
         />
         {isRegister && (
           <>
             <Input
               label="First Name"
-              type="text"
-              id="firstName"
-              onChange={(e) => handleSetFormState("firstName", e.target.value)}
+              {...register("firstName", { required: "Field is required" })}
+              error={errors.firstName}
             />
             <Input
               label="Last Name"
-              type="text"
-              id="lastName"
-              onChange={(e) => handleSetFormState("lastName", e.target.value)}
+              {...register("lastName", { required: "Field is required" })}
+              error={errors.lastName}
             />
             <Input
               label="Email"
-              type="text"
-              id="email"
-              onChange={(e) => handleSetFormState("email", e.target.value)}
+              {...register("email", { required: "Field is required" })}
+              error={errors.email}
             />
           </>
         )}
         <Input
           label="Password"
           type="password"
-          id="password"
-          value={formState.password}
-          onChange={(e) => handleSetFormState("password", e.target.value)}
+          {...register("password", {
+            required: "Field is required",
+          })}
+          error={errors.password}
         />
         {isRegister && (
           <Input
             label="Confirm Password"
             type="password"
-            id="confirmPassword"
-            value={formState.confirmPassword}
-            onChange={(e) =>
-              handleSetFormState("confirmPassword", e.target.value)
-            }
+            {...register("confirmPassword", {
+              required: "Field is required",
+            })}
+            error={errors.confirmPassword}
           />
         )}
         <button className="m-2 bg-secondary text-primary font-semibold rounded-lg hover:bg-gray-200 focus:outline-none cursor-pointer">
           {isRegister ? "Register" : "Login"}
         </button>
+      </div>
+      <div>
+        <p></p>
       </div>
     </form>
   )
