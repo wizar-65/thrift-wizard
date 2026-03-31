@@ -2,9 +2,8 @@ import { Input } from "@/components/form/Input"
 import { useLoginMutation, useRegisterMutation } from "@/redux/services/auth"
 import { useEffect } from "react"
 import { useForm } from "react-hook-form"
-import { useAuth } from "../context/AuthContext"
+import { useAuth } from "@/features/auth/hooks/useAuth"
 import { useNavigate } from "react-router-dom"
-import { useUser } from "@/hooks/useUser"
 
 type LoginRegisterFormInputs = {
   username: string
@@ -31,10 +30,9 @@ export function LoginRegisterForm({
     lastName: "",
   }
   const navigate = useNavigate()
-  const { handleSetAccessToken } = useAuth()
+  const { updateToken, setUser } = useAuth()
   const [registerUser, { isLoading: registerLoading }] = useRegisterMutation()
   const [loginUser, { isLoading: loginLoading }] = useLoginMutation()
-  const { setUser } = useUser()
 
   const {
     register,
@@ -63,7 +61,7 @@ export function LoginRegisterForm({
           password,
         })
         if (response.data) {
-          handleSetAccessToken(response.data.accessToken)
+          updateToken(response.data.accessToken)
           setUser(response.data.userInfo)
           navigate("/")
         }
